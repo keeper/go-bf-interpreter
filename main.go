@@ -1,4 +1,4 @@
-package main
+package bf_interpreter
 
 import "fmt"
 
@@ -6,7 +6,7 @@ func main() {
 	input := ""
 	buf := [30]byte{}
 	ptr := 0
-	rt_pc_stk := []int{}
+	rt_pc_stk := NewStack()
 	pc := 0
 	fmt.Scanf("%s", &input)
 	for pc != len(input) {
@@ -32,13 +32,12 @@ func main() {
 			pc++
 		case '[':
 			pc++
-			rt_pc_stk = append(rt_pc_stk, pc)
+			rt_pc_stk.push(pc)
 		case ']':
-			rt_to := rt_pc_stk[len(rt_pc_stk)-1] // get top of the stack
 			if buf[ptr] != 0 {
-				pc = rt_to
+				pc = rt_pc_stk.top()
 			} else {
-				rt_pc_stk = rt_pc_stk[:len(rt_pc_stk)-1] // pop the return pointer
+				rt_pc_stk.pop()
 				pc++
 			}
 		}
